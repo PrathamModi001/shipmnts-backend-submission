@@ -7,6 +7,7 @@ const keys = require('./config/keys');
 const locationRoutes = require('./routes/locationRoutes');
 const roadRoutes = require('./routes/roadRoutes');
 const trafficRoutes = require('./routes/trafficRoutes');
+const pathRoutes = require('./routes/pathRoutes');
 
 const app = express();
 
@@ -23,6 +24,7 @@ mongoose
 app.use(locationRoutes);
 app.use(roadRoutes);
 app.use(trafficRoutes);
+app.use(pathRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

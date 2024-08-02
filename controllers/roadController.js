@@ -44,8 +44,9 @@ exports.addRoad = async (req, res) => {
 
         // only these strings are allowed, MY ASSUMPTION
         if (!trafficConditions.hasOwnProperty(traffic_condition)) {
-            return res.status(400).json({ error: 
-                ```Invalid traffic condition. Valid values are: 
+            return res.status(400).json({
+                error:
+                    ```Invalid traffic condition. Valid values are: 
                 Clear: 1
                 Light: 2
                 Moderate: 3
@@ -62,6 +63,12 @@ exports.addRoad = async (req, res) => {
 
         // assign weight based on traffic condition
         const trafficWeight = trafficConditions[traffic_condition];
+
+        // check if a road doesnt already exist:
+        const roadExists = await Road.findOne({ start_location_id, end_location_id });
+        if (roadExists) {
+            return res.status(400).json({ error: "Road between these locations already exists." });
+        }
 
         const road = new Road({
             start_location_id,

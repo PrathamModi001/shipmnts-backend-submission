@@ -19,7 +19,12 @@ const roadSchema = new mongoose.Schema({
     traffic_condition: {
         type: String,
         required: true
+    },
+    traffic_weight: {
+        type: Number,
+        required: true
     }
 });
 
 module.exports = mongoose.model('Road', roadSchema);
+

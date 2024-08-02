@@ -1,5 +1,6 @@
 const Road = require('../models/road');
 const Location = require('../models/location');
+const { parse } = require('json2csv');
 
 const trafficConditions = {
     clear: 1,
@@ -80,6 +81,35 @@ exports.addRoad = async (req, res) => {
 
         await road.save();
         res.status(201).json(road);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.generateCsvReportForRoad = async (req, res) => {
+    try {
+        const roadId = req.params.id;
+
+        const road = await Road.findById(roadId);
+
+        if (!road) {
+            return res.status(404).json({ error: "Road not found." });
+        }
+
+        const csv = parse([{
+            road_id: road._id,
+            start_location_id: road.start_location_id,
+            end_location_id: road.end_location_id,
+            distance: road.distance,
+            traffic_condition: road.traffic_condition
+        }]);
+
+        console.log(csv);
+
+        // Set response headers for CSV file download
+        res.header('Content-Type', 'text/csv');
+        res.header('Content-Disposition', `attachment; filename="road_${roadId}_traffic_condition.csv"`);
+        res.send(csv);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

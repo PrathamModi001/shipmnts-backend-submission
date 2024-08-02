@@ -1,4 +1,5 @@
 const TrafficUpdate = require('../models/traffic');
+const Road = require('../models/road');
 
 const trafficConditions = {
     clear: 1,
@@ -15,11 +16,12 @@ const trafficConditions = {
 
 exports.updateTrafficCondition = async (req, res) => {
     try {
-        const {
+        var {
             road_id,
             timestamp,
             traffic_condition
         } = req.body;
+        
 
         // check to see if road with this id exists or not
         const roadExists = await Road.findById(road_id);

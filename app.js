@@ -6,6 +6,7 @@ const keys = require('./config/keys');
 
 const locationRoutes = require('./routes/locationRoutes');
 const roadRoutes = require('./routes/roadRoutes');
+const trafficRoutes = require('./routes/trafficRoutes');
 
 const app = express();
 
@@ -19,10 +20,11 @@ mongoose
     .then(() => console.log("MongoDB successfully connected"))
     .catch(err => console.log(err));
 
-app.use('/api', locationRoutes);
-app.use('/api', roadRoutes);
+app.use(locationRoutes);
+app.use(roadRoutes);
+app.use(trafficRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
